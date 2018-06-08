@@ -1,0 +1,11 @@
+{
+  "name": "lfn",
+  "version": "0.1.0",
+  "description": "Lazy Functional Wrapper",
+  "main": "index.js",
+  "author": "Ishi Ruy <dev@nhz.io>",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
