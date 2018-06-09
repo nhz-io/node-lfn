@@ -1,35 +1,74 @@
 'use strict'
 
-const TOK = '_'
-const FUNCTION = 'function'
-
-module.exports = function $ (x) {
-  if (typeof x === FUNCTION) {
-    if (x[TOK]) {
-      return x
+function $ (target) {
+  if (typeof target === 'function') {
+    if (target.invoker) {
+      return target.invoker
     }
     
-    return Object.assign(
-      function (...args) {
-        if (args.length === 0) {
-          return x()
-        }
-        
-        return Object.assign(
-          function () {
-            return x(...args.map(a => $(a)()))
-          },
-          {[TOK]: x}
-        )
-      },
-      {[TOK]: x}
-    )
+    function invoker (...args) {
+      return invoker.real.apply(this, args.map(arg => $(arg)()))
+    }
+    
+    invoker.real = target
+    invoker.invoker = invoker
+    
+    return invoker
   }
   
-  return Object.assign(
-    function () {
-      return x
-    },
-    {[TOK]: x}
-  )
+  function value () {
+    return value.real
+  }
+  
+  value.real = target
+  value.invoker = value
+  
+  return value
 }
+
+function $$ (target) {
+  if (typeof target === 'function') {
+    if (target.invoker) {
+      return target
+    }
+    
+    function invoker (...args) {
+      return invoker.real.apply(this, args.map(arg => $(arg)()))
+    }
+    
+    invoker.real = target
+    invoker.invoker = invoker
+    
+    function lazy (...args) {
+      function lazyInvoker () {
+        return lazy.invoker.apply(this, args)
+      }
+      
+      lazyInvoker.invoker = invoker
+      lazyInvoker.real = target
+      
+      return lazyInvoker
+    }
+    
+    lazy.invoker = invoker
+    lazy.real = target
+    
+    return lazy
+  }
+  
+  function value () {
+    return value.real
+  }
+  
+  value.real = target
+  value.invoker = value
+  
+  return value
+}
+
+$.$ = $
+$.$$ = $$
+$$.$ = $
+$$.$$ = $$
+
+module.exports = $
