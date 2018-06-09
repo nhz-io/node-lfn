@@ -11,20 +11,38 @@ npm i -S lfn
 ## Usage
 
 ```javascript
-const $ = require('lfn')
+// Import $ - normal invoker, $$ - lazy invoker
+const {$, $$} = require('lfn')
 
-const $ = require('.')
+// Summator
+const sum = (...args) => args.reduce((a, x) => a + x, 0)
 
-const sum = $((...args) => args.reduce((a, x) => a + x, 0))
-const log = $(console.log.bind(console))
+// Invoker
+const $sum = $(sum)
 
-const one = $(1) // () => 1
-const two = $(2) // () => 2
+// Lazy Invoker
+const $$sum = $$(sum)
 
-const sumOneTwo = sum(one, two)
-const logSumOneTwo = log(sumOneTwo)
+// Constant invoker for `1`
+const one = $(1)
 
-logSumOneTwo() // 3
+// Constant invoker for `2`
+const two = $(2)
+
+// Print 3 3 3
+console.log($sum(1, 2), $sum(one, two), $sum(1, two))  
+
+// 1 + 2 lazy invoker
+const sum12 = $$sum(1, 2)
+
+// one + two lazy invoker
+const sumOneTwo = $$sum(one, two)
+
+// 1 + two lazy invoker
+const sum1Two = $$sum(1, two)
+
+// Print 3 3 3
+console.log(sum12(), sumOneTwo(), sum1Two())
 ```
 
 # MIT
