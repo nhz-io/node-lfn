@@ -4,9 +4,7 @@ export function $ (target) {
       return target
     }
 
-    function invoker (...args) {
-      return invoker.real.apply(null,  args.map(arg => $(arg)()))
-    }
+    const invoker = (...args) => invoker.real.apply(null,  args.map(arg => $(arg)()))
 
     invoker.real = target
     invoker.invoker = invoker
@@ -14,9 +12,7 @@ export function $ (target) {
     return invoker
   }
 
-  function value () {
-    return value.real
-  }
+  const value = () => value.real
 
   value.real = target
   value.invoker = value
@@ -29,18 +25,14 @@ export function $$ (target) {
     if (target.invoker) {
       return target
     }
-
-    function invoker (...args) {
-      return invoker.real.apply(null,  args.map(arg => $(arg)()))
-    }
+    
+    const invoker = (...args) => invoker.real.apply(null,  args.map(arg => $(arg)()))
 
     invoker.real = target
     invoker.invoker = invoker
 
-    function lazy (...args) {
-      function lazyInvoker () {
-        return lazy.invoker.apply(null,  args)
-      }
+    const lazy = (...args) => {
+      const lazyInvoker = () => lazy.invoker.apply(null,  args)
 
       lazyInvoker.invoker = invoker
       lazyInvoker.real = target
@@ -53,10 +45,8 @@ export function $$ (target) {
 
     return lazy
   }
-
-  function value () {
-    return value.real
-  }
+  
+  const value = () => value.real
 
   value.real = target
   value.invoker = value

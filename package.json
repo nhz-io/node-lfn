@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "npm run lint",
+    "clean": "rm -rf lfn.cjs.js lfn.es.js",
     "lint": "eslint -c .eslintrc.js *.js lib test",
     "rollup": "cross-env NODE_ENV=production rollup -c rollup.config.js",
     "build:cjs": "npm run rollup -- -f cjs -o lfn.cjs.js",

@@ -11,7 +11,6 @@ module.exports = {
   ],
   rules: {
     'generator-star-spacing': 'off',
-    'no-inner-declarations': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'comma-dangle': ['error', 'always-multiline'],
     'brace-style': ["error", "stroustrup"],
