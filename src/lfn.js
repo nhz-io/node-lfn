@@ -1,13 +1,11 @@
-'use strict'
-
-function $ (target) {
+export function $ (target) {
   if (typeof target === 'function') {
     if (target.invoker) {
       return target
     }
 
     function invoker (...args) {
-      return invoker.real.apply(this, args.map(arg => $(arg)()))
+      return invoker.real.apply(null,  args.map(arg => $(arg)()))
     }
 
     invoker.real = target
@@ -26,14 +24,14 @@ function $ (target) {
   return value
 }
 
-function $$ (target) {
+export function $$ (target) {
   if (typeof target === 'function') {
     if (target.invoker) {
       return target
     }
 
     function invoker (...args) {
-      return invoker.real.apply(this, args.map(arg => $(arg)()))
+      return invoker.real.apply(null,  args.map(arg => $(arg)()))
     }
 
     invoker.real = target
@@ -41,7 +39,7 @@ function $$ (target) {
 
     function lazy (...args) {
       function lazyInvoker () {
-        return lazy.invoker.apply(this, args)
+        return lazy.invoker.apply(null,  args)
       }
 
       lazyInvoker.invoker = invoker
@@ -70,5 +68,3 @@ $.$ = $
 $.$$ = $$
 $$.$ = $
 $$.$$ = $$
-
-module.exports = $

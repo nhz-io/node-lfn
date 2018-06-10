@@ -1,2 +1,6 @@
-.idea
-node_modules
+*
+!/README.md
+!/package.json
+!/lfn.cjs.js
+!/lfn.es.js
+!/LICENSE
